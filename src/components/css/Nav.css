@@ -1,0 +1,19 @@
+
+.nav-item {
+    text-decoration: none;
+    margin-right: 20px;
+    background: linear-gradient(200deg, rgb(5, 238, 234), #0b85f1,#2c5ef5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    -webkit-text-fill-color: red; 
+    font-weight: bold;
+}
+
