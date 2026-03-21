@@ -1,21 +1,8 @@
 import React from "react";
 import "./css/Work.css";
 import img1 from "./assets/img1.jpg";
-import img2 from "./assets/img2.jpg";
-import img3 from "./assets/img3.jpg";
-import img4 from "./assets/img4.jpg";
-import img5 from "./assets/img5.jpg";
-import img6 from "./assets/img6.jpg";
-import img7 from "./assets/img7.jpg";
-import img8 from "./assets/img8.jpg";
-import img9 from "./assets/img9.jpg";
-import img10 from "./assets/img10.jpg";
-import img11 from "./assets/img11.jpg";
-import img12 from "./assets/img12.jpg";
-import img13 from "./assets/img13.jpg";
-import img14 from "./assets/img14.jpg";
-import img15 from "./assets/img15.jpg";
-import img16 from "./assets/img16.jpg";
+// import img2 from "./assets/img2.jpg";
+
 
 import work1 from "./assets/work1.mp4";
 import work3 from "./assets/work3.mp4";
@@ -32,159 +19,23 @@ import work12 from "./assets/work12.mp4";
 import work13 from "./assets/work13.mp4";
 function Work() {
     return (
-        <div className="work">
+          <div className="work">
             <div className="d-flex justify-content-center align-items-center"><h1>Some Project</h1></div>
-            <div className="d-flex justify-content-center flex-wrap">
-            <div className="card">
+              <div className="d-flex justify-content-center flex-wrap">
+                <div className="card">
                   <img src={img1} className="card-img-top" alt="..." />
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>UltraEdit Clone</b>A sophisticated text and code editor clone featuring a multi-tab interface and syntax-friendly layout.
                     </p>
                   </div>
                 </div>
-                <div className="card">
-                  <img src={img2} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img3} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img4} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img5} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img6} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img7} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img8} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img9} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img10} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img11} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img12} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img13} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img14} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img15} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
-                <div className="card">
-                  <img src={img16} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                  </div>
-                </div>
+
                 <div className="card" >
                   <video autoPlay muted loop src={work1}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      An analytical dashboard that transforms raw datasets into interactive visual insights using statistical plotting libraries.
                     </p>
                   </div>
                 </div>
@@ -192,8 +43,7 @@ function Work() {
                   <video autoPlay muted loop src={work2}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>Netflix Clone</b>A high-fidelity streaming service replica featuring dynamic content.
                     </p>
                   </div>
                 </div>
@@ -201,8 +51,7 @@ function Work() {
                   <video autoPlay muted loop src={work3}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>TextUtils</b>A React-based utility tool for real-time text manipulation, including case conversion, word counting, and extra space removal.
                     </p>
                   </div>
                 </div>
@@ -210,8 +59,7 @@ function Work() {
                   <video autoPlay muted loop src={work4}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>News App</b>A real-time news aggregator that fetches global headlines via API, categorized by business, tech, and sports.
                     </p>
                   </div>
                 </div>
@@ -219,8 +67,7 @@ function Work() {
                   <video autoPlay muted loop src={work5}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>MovieX</b>An immersive movie discovery platform with advanced search functionality and detailed media metadata.
                     </p>
                   </div>
                 </div>
@@ -228,8 +75,7 @@ function Work() {
                   <video autoPlay muted loop src={work6}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                     <b>FoodHub</b> A full-stack food delivery interface featuring menu filtering, cart management, and a streamlined checkout flow.
                     </p>
                   </div>
                 </div>
@@ -237,8 +83,7 @@ function Work() {
                   <video autoPlay muted loop src={work7}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                       <b>AI Assistant </b>	An intelligent conversational interface capable of processing user queries and providing context-aware responses.
                     </p>
                   </div>
                 </div>
@@ -246,8 +91,7 @@ function Work() {
                   <video autoPlay muted loop src={work8}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                     <b>BirthdayMsg</b> 	A personalized, interactive digital greeting card featuring custom animations and message.
                     </p>
                   </div>
                 </div>
@@ -255,8 +99,7 @@ function Work() {
                   <video autoPlay muted loop src={work9}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                    <b>CV</b>	A responsive, web-based professional resume designed for high readability and easy digital sharing.
                     </p>
                   </div>
                 </div>
@@ -264,8 +107,7 @@ function Work() {
                   <video autoPlay muted loop src={work10}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>Spotify clone</b> A high-fidelity streaming service replica featuring dynamic content 
                     </p>
                   </div>
                 </div>
@@ -273,8 +115,7 @@ function Work() {
                   <video autoPlay muted loop src={work11}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      Some Animation visually driven landing page showcasing eco-tourism and nature photography with a focus on modern UI.
                     </p>
                   </div>
                 </div>
@@ -282,8 +123,7 @@ function Work() {
                   <video autoPlay muted loop src={work12}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      <b>FlightBook</b>	A travel booking conceptual UI focused on user experience, date selection, and flight scheduling.
                     </p>
                   </div>
                 </div>
@@ -291,13 +131,12 @@ function Work() {
                   <video autoPlay muted loop src={work13}></video>
                   <div className="card-body">
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                    <b>NatureX</b> 	A visually driven landing page showcasing eco-tourism and nature photography with a focus on modern UI.
                     </p>
                   </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center">...</div>
+            <div className="d-flex justify-content-center">...</div>
         </div>
     );
 }

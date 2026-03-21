@@ -81,7 +81,7 @@ video {
   margin: 0 auto;
   padding: 20px;
   background-color: midnightblue;
-  color: white;
+  /* color: white; */
 }
 .circle {
   display: flex;
@@ -91,7 +91,7 @@ video {
   height: 100px;
   width: 100px;
   border-radius: 50%;
-  background-color: midnightblue;
+  background-color:#00d2ff;
   color: white;
   cursor: pointer;
   text-decoration: none;
@@ -99,8 +99,11 @@ video {
 }
 
 .circle:hover {
-  background-color: black;
+  background-color:#198754;
   transform: scale(1.2);
   color: black;
-  color: white;
+}
+.about-img22{
+  margin-right: 20px;
+  height: auto;
 }

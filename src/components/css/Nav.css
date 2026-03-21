@@ -2,7 +2,7 @@
 .nav-item {
     text-decoration: none;
     margin-right: 20px;
-    background: linear-gradient(200deg, rgb(5, 238, 234), #0b85f1,#2c5ef5);
+    background: linear-gradient(200deg, rgb(250, 1, 1), #fd0101,#fc0202);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 18px;
@@ -13,7 +13,8 @@
 }
 
 .nav-item:hover {
-    -webkit-text-fill-color: red; 
+    /* -webkit-text-fill-color: darkblue;/ */
+    -webkit-text-fill-color: #00d2ff;
     font-weight: bold;
 }
 
