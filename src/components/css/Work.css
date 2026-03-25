@@ -1,0 +1,22 @@
+
+.card {
+  width: 400px;
+  height: 370px;
+  margin: 10px;
+  background-color: #242529; 
+  color: #00d2ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+}
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+div.card>video,div.card>img{
+  height: 220px;
+  width: 100%;
+}
