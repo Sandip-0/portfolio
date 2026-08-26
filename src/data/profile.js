@@ -1,3 +1,4 @@
+import resumePdfFile from '../assets/sandipupdatated.pdf';
 export const profile = {
   name: "Sandip Adak",
   shortName: "Sandip",
@@ -9,7 +10,7 @@ export const profile = {
   email: "sandipadak000@gmail.com",
   phone: "+91 9134460122",
   whatsapp: "https://wa.me/9134460122",
-  resumePdf: "src/assets/sandipupdatated.pdf",
+  resumePdf: resumePdfFile,
   socials: {
     github: "https://github.com/Sandip-0",
     linkedin: "https://www.linkedin.com/in/sandip-adak-70586a2b3",
