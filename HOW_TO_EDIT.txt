@@ -1,0 +1,197 @@
+================================================================================
+           SANDIP ADAK PORTFOLIO - HOW TO EDIT & UPDATE EVERYTHING
+================================================================================
+
+All your website content is stored in simple data files inside the "src/data/" folder.
+You do NOT need to modify React code or CSS to update your website.
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1. How to Add or Edit Projects
+2. How to Update Resume & Experience (Internship, Certs, Education, Bio)
+3. How to Replace Your PDF Resume File
+4. How to Add or Remove Skills
+5. How to Run the Website on Your Computer (Local Preview)
+6. How to Build & Deploy to GitHub Pages or Vercel
+7. File Location Quick Reference
+
+================================================================================
+1. HOW TO ADD OR EDIT PROJECTS
+================================================================================
+File Location: src/data/projects.js
+
+To edit an existing project:
+- Open "src/data/projects.js"
+- Find the project you want to change (e.g. "insightforge-rag" or "credit-risk-prediction")
+- Edit the title, overview, techStack, githubUrl, or liveUrl.
+
+To ADD a brand new project:
+- Open "src/data/projects.js"
+- Copy and paste this block into the "projects" list:
+
+  {
+    id: "my-new-project",
+    title: "Project Title Here",
+    tagline: "Short one-line subtitle",
+    category: "ai",             // Choose one: "ai" | "ml" | "web"
+    featured: false,           // Set true to make it a large featured card
+    badge: "Computer Vision",
+    techStack: ["Python", "PyTorch", "Streamlit"],
+    overview: "Detailed description of what this project does.",
+    bulletPoints: [
+      "Key achievement or feature 1",
+      "Key achievement or feature 2"
+    ],
+    keyMetrics: [
+      { label: "Accuracy", value: "95%" },
+      { label: "Deployment", value: "Streamlit Cloud" }
+    ],
+    githubUrl: "https://github.com/Sandip-0/your-repo-name",
+    liveUrl: "https://your-app.streamlit.app", // or null if no live link
+    color: "from-cyan-500/20 via-blue-500/10 to-transparent",
+    accentColor: "#06b6d4"
+  },
+
+Save the file, and your new project will appear on the website immediately!
+
+================================================================================
+2. HOW TO UPDATE RESUME, EXPERIENCE, CERTS, AND EDUCATION
+================================================================================
+File Location: src/data/profile.js
+
+Open "src/data/profile.js" to edit any of the following:
+
+- CONTACT & LINKS:
+  email: "sandipadak000@gmail.com"
+  phone: "+91 9134460122"
+  socials.github: "https://github.com/Sandip-0"
+  socials.linkedin: "https://www.linkedin.com/in/sandip-adak-70586a2b3"
+
+- INTERNSHIP & TRAINING (inside "experience"):
+  Add or edit work experience:
+  {
+    role: "Data Science Intern",
+    company: "Company Name",
+    period: "6-Month Internship",
+    type: "Internship & Training",
+    bullets: [
+      "Point 1 about your work...",
+      "Point 2 about your work..."
+    ]
+  }
+
+- CERTIFICATIONS (inside "certificates"):
+  Add a new certificate:
+  {
+    title: "AWS Certified Machine Learning Engineer",
+    issuer: "Amazon Web Services",
+    tag: "AWS Certified"
+  }
+
+- CODING ACHIEVEMENTS (inside "achievements"):
+  {
+    title: "60 Days of Coding Challenge",
+    platform: "GeeksforGeeks",
+    desc: "Solved 300+ DSA problems."
+  }
+
+- EDUCATION & CGPA (inside "education"):
+  Update your CGPA or graduation year:
+  {
+    degree: "Bachelor of Technology in Computer Science & Engineering",
+    institution: "Swami Vivekananda University",
+    location: "Barrackpore, West Bengal",
+    period: "Aug' 23 - Present",
+    grade: "CGPA: 8.00",
+    status: "Active Undergraduate",
+    description: "Coursework details..."
+  }
+
+================================================================================
+3. HOW TO REPLACE YOUR PDF RESUME FILE
+================================================================================
+Location: public/resume.pdf
+
+Whenever you have a new PDF resume:
+1. Save or rename your PDF file to: "resume.pdf"
+2. Copy it into the "public/" folder:
+   sandip-portfolio/public/resume.pdf
+3. That's it! The "Download Resume" buttons on the website will automatically
+   download this updated PDF file.
+
+================================================================================
+4. HOW TO ADD OR REMOVE SKILLS
+================================================================================
+File Location: src/data/skills.js
+
+Open "src/data/skills.js" and add any skill to the "skills" list:
+{
+  name: "Docker",
+  category: "tools",       // "programming" | "ds" | "ml" | "ai" | "web" | "tools"
+  level: "Proficient",     // "Advanced" | "Proficient" | "Intermediate"
+  icon: "Boxes",
+  tag: "Containerization"
+}
+
+================================================================================
+5. HOW TO RUN THE WEBSITE ON YOUR COMPUTER
+================================================================================
+Open your terminal and run:
+
+Step 1: Go to project directory:
+cd /Users/sandipadak/.gemini/antigravity/scratch/sandip-portfolio
+
+Step 2: Start the live preview server:
+npm run dev
+
+Step 3: Open in browser:
+http://localhost:5173/
+
+================================================================================
+6. HOW TO DEPLOY YOUR WEBSITE LIVE
+================================================================================
+
+OPTION A: DEPLOY TO VERCEL (EASIEST & RECOMMENDED)
+1. Push your repository to GitHub:
+   cd /Users/sandipadak/.gemini/antigravity/scratch/sandip-portfolio
+   git init
+   git add .
+   git commit -m "Updated portfolio"
+   git remote add origin https://github.com/Sandip-0/portfolio.git
+   git branch -M main
+   git push -u origin main --force
+
+2. Go to https://vercel.com and log in with your GitHub.
+3. Click "Add New Project" and choose your "portfolio" repository.
+4. Click "Deploy". Your site is live in 30 seconds!
+
+---
+
+OPTION B: DEPLOY TO GITHUB PAGES (https://sandip-0.github.io/portfolio/)
+1. In "vite.config.js", make sure you have:
+   base: '/portfolio/',
+
+2. Run:
+   npm install --save-dev gh-pages
+
+3. In "package.json", add:
+   "scripts": {
+     "predeploy": "npm run build",
+     "deploy": "gh-pages -d dist"
+   }
+
+4. Run:
+   npm run deploy
+
+================================================================================
+7. FILE LOCATION QUICK REFERENCE
+================================================================================
+Projects:            src/data/projects.js
+Resume & Bio:        src/data/profile.js
+Skills:              src/data/skills.js
+PDF Resume File:     public/resume.pdf
+Components:          src/components/
+Styles & Theme:      src/index.css
+Config:              vite.config.js & package.json
+================================================================================
