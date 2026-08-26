@@ -9,7 +9,7 @@ export const profile = {
   email: "sandipadak000@gmail.com",
   phone: "+91 9134460122",
   whatsapp: "https://wa.me/9134460122",
-  resumePdf: "/resume.pdf",
+  resumePdf: "src/assets/sandipupdatated.pdf",
   socials: {
     github: "https://github.com/Sandip-0",
     linkedin: "https://www.linkedin.com/in/sandip-adak-70586a2b3",
