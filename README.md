@@ -119,4 +119,4 @@ Run:
 ```bash
 npm run deploy
 ```
-Your website will be published live at: **https://portfolio-sandip-0s-projects.vercel.app**!
+Your website will be published live at: **https://portfolio-beige-xi-f1npl8n2j5.vercel.app**!
