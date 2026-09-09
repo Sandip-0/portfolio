@@ -34,3 +34,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore requirements.txt so Vercel does not mistake this React app for Python
+requirements.txt
