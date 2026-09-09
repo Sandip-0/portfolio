@@ -73,7 +73,7 @@ export default function AboutDS() {
                 className="btn-magnetic"
                 style={{ fontSize: '11px', padding: '10px 20px' }}
               >
-                LinkedIn ↗
+                <span>LinkedIn</span> <span style={{ fontSize: '14px' }}>↗</span>
               </a>
               <a
                 href={profile.socials.github}
@@ -82,7 +82,7 @@ export default function AboutDS() {
                 className="btn-magnetic"
                 style={{ fontSize: '11px', padding: '10px 20px' }}
               >
-                GitHub ↗
+                <span>GitHub</span> <span style={{ fontSize: '14px' }}>↗</span>
               </a>
             </motion.div>
           </div>

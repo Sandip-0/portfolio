@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 /**
- * Adaptive cursor using mix-blend-mode: difference
- * → appears BLACK on light backgrounds (cream sections)
- * → appears WHITE on dark backgrounds (contact, footer, loader)
- * This is how Dennis Snellenberg's cursor works.
+ * Dennis Snellenberg–style Dual-Element Cursor:
+ * 1. Small solid dot that tracks the mouse pointer with zero latency.
+ * 2. Outer follower ring that lags behind with smooth lerp physics.
+ * 3. Interactive Zoom Effect: Smoothly expands/zooms up when hovering over
+ *    buttons, links, project rows, and cards.
+ * 4. Uses mix-blend-mode: difference with white to automatically adapt:
+ *    → Inverts to black/charcoal on light cream sections.
+ *    → Inverts to crisp white on dark charcoal sections (Contact, Footer).
  */
 export default function CustomCursor() {
   const dotRef  = useRef(null);
@@ -13,70 +17,73 @@ export default function CustomCursor() {
   const posRef  = useRef({ mx: -200, my: -200, rx: -200, ry: -200 });
   const rafRef  = useRef(null);
 
-  const [label,  setLabel]  = useState('');
-  const [active, setActive] = useState(false);
-  const [hidden, setHidden] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const [hidden,  setHidden]  = useState(true);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    // Only run on non-touch devices with fine mouse pointers
+    const touchDevice = window.matchMedia('(hover: none) or (pointer: coarse)').matches;
+    if (touchDevice) {
+      setIsTouch(true);
+      return;
+    }
+
     const pos = posRef.current;
 
-    // ── rAF lerp loop ──────────────────────────────────────────
+    // ── Smooth 60/120fps hardware-accelerated rAF lerp loop ────
     const tick = () => {
-      pos.rx += (pos.mx - pos.rx) * 0.10;
-      pos.ry += (pos.my - pos.ry) * 0.10;
+      // Lerp physics: follower ring smoothly chases the dot
+      pos.rx += (pos.mx - pos.rx) * 0.15;
+      pos.ry += (pos.my - pos.ry) * 0.15;
 
       if (dotRef.current) {
         dotRef.current.style.transform =
-          `translate(${pos.mx - 3}px, ${pos.my - 3}px)`;
+          `translate3d(${pos.mx}px, ${pos.my}px, 0) translate(-50%, -50%)`;
       }
       if (ringRef.current) {
-        ringRef.current.style.left = `${pos.rx}px`;
-        ringRef.current.style.top  = `${pos.ry}px`;
+        ringRef.current.style.transform =
+          `translate3d(${pos.rx}px, ${pos.ry}px, 0) translate(-50%, -50%)`;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
 
-    // ── Mouse events ───────────────────────────────────────────
+    // ── Mouse tracking ─────────────────────────────────────────
     const onMove = (e) => {
       pos.mx = e.clientX;
       pos.my = e.clientY;
       if (hidden) setHidden(false);
     };
-    const onLeave  = () => setHidden(true);
-    const onEnter  = () => setHidden(false);
+
+    const onMouseDown = () => setClicked(true);
+    const onMouseUp   = () => setClicked(false);
+    const onLeave     = () => setHidden(true);
+    const onEnter     = () => setHidden(false);
 
     window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseup',   onMouseUp);
     document.addEventListener('mouseleave', onLeave);
     document.addEventListener('mouseenter', onEnter);
 
-    // ── Hover detection ────────────────────────────────────────
-    const getLabel = (el) => {
-      if (el.dataset?.cursorLabel) return el.dataset.cursorLabel;
-      if (el.tagName === 'A')       return 'Open ↗';
-      if (el.tagName === 'BUTTON')  return 'Click';
-      if (el.classList?.contains('project-row')) return 'View →';
-      return '';
-    };
+    // ── Interactive Hover Detection (Triggers Zoom Effect) ─────
+    const onElementEnter = () => setHovered(true);
+    const onElementLeave = () => setHovered(false);
 
-    const onEnterEl = (e) => {
-      setActive(true);
-      setLabel(getLabel(e.currentTarget));
-    };
-    const onLeaveEl = () => { setActive(false); setLabel(''); };
-
-    const selectors = 'a, button, [role="button"], .project-row, .btn-magnetic, .skill-tag, .cert-card';
+    const selectors = 'a, button, [role="button"], .project-row, .btn-magnetic, .skill-tag, .cert-card, input, textarea, select';
     let targets = [];
 
     const bindAll = () => {
-      targets.forEach(el => {
-        el.removeEventListener('mouseenter', onEnterEl);
-        el.removeEventListener('mouseleave', onLeaveEl);
+      targets.forEach((el) => {
+        el.removeEventListener('mouseenter', onElementEnter);
+        el.removeEventListener('mouseleave', onElementLeave);
       });
       targets = [...document.querySelectorAll(selectors)];
-      targets.forEach(el => {
-        el.addEventListener('mouseenter', onEnterEl);
-        el.addEventListener('mouseleave', onLeaveEl);
+      targets.forEach((el) => {
+        el.addEventListener('mouseenter', onElementEnter);
+        el.addEventListener('mouseleave', onElementLeave);
       });
     };
 
@@ -87,96 +94,79 @@ export default function CustomCursor() {
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mouseup',   onMouseUp);
       document.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('mouseenter', onEnter);
       observer.disconnect();
-      targets.forEach(el => {
-        el.removeEventListener('mouseenter', onEnterEl);
-        el.removeEventListener('mouseleave', onLeaveEl);
+      targets.forEach((el) => {
+        el.removeEventListener('mouseenter', onElementEnter);
+        el.removeEventListener('mouseleave', onElementLeave);
       });
     };
-  }, []); // run once only
+  }, []);
 
-  const ringSize = active ? (label ? 76 : 46) : 34;
+  if (isTouch) return null;
+
+  // Zoomed dimensions when hovering interactive elements
+  const ringSize = hovered ? (clicked ? 52 : 64) : (clicked ? 28 : 38);
 
   return (
     <>
-      {/* ── Dot — always WHITE, mix-blend-mode: difference ──────
-          Result: black on cream, white on charcoal/black — automatic! */}
-      <div
+      {/* ── 1. The Tracking Dot (Instant response) ─────────────── */}
+      <motion.div
         ref={dotRef}
         aria-hidden="true"
+        animate={{
+          scale: clicked ? 0.75 : (hovered ? 1.2 : 1),
+          opacity: hidden ? 0 : 1,
+        }}
+        transition={{ duration: 0.15 }}
         style={{
           position:       'fixed',
           top:            0,
           left:           0,
-          width:          '6px',
-          height:         '6px',
+          width:          '8px',
+          height:         '8px',
           borderRadius:   '50%',
-          background:     '#ffffff',       /* white → inverts to black on cream */
+          background:     '#ffffff',       /* Inverts: Black on cream, White on dark */
           pointerEvents:  'none',
           zIndex:         9999999,
-          opacity:        hidden ? 0 : 1,
-          transition:     'opacity 0.15s ease',
           willChange:     'transform',
-          mixBlendMode:   'difference',    /* the magic ✨ */
+          mixBlendMode:   'difference',
         }}
       />
 
-      {/* ── Ring — same trick ────────────────────────────────────── */}
+      {/* ── 2. The Follower Ring (Lerp physics + Zoom Effect) ─── */}
       <motion.div
         ref={ringRef}
         aria-hidden="true"
+        animate={{
+          width:        ringSize,
+          height:       ringSize,
+          borderWidth:  hovered ? '2px' : '1.5px',
+          background:   hovered ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+          opacity:      hidden ? 0 : 1,
+        }}
+        transition={{
+          type:      'spring',
+          stiffness: 380,
+          damping:   26,
+          mass:      0.5,
+        }}
         style={{
           position:      'fixed',
           top:           0,
           left:          0,
-          transform:     'translate(-50%, -50%)',
+          borderRadius:  '50%',
+          borderStyle:   'solid',
+          borderColor:   '#ffffff',        /* Inverts: Black ring on cream, White ring on dark */
           pointerEvents: 'none',
           zIndex:        9999998,
-          borderRadius:  '50%',
-          display:       'flex',
-          alignItems:    'center',
-          justifyContent:'center',
-          mixBlendMode:  'difference',     /* white ring → visible on any bg */
-          opacity:       hidden ? 0 : 1,
-          transition:    'opacity 0.15s ease',
-          willChange:    'left, top',
+          mixBlendMode:  'difference',
+          willChange:    'transform, width, height',
         }}
-        animate={{
-          width:      ringSize,
-          height:     ringSize,
-          background: active ? '#ffffff' : 'transparent',
-          border:     active ? '0px solid transparent' : '1.5px solid #ffffff',
-        }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <AnimatePresence>
-          {active && label && (
-            <motion.span
-              key={label}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.18 }}
-              style={{
-                fontFamily:    'var(--font-sans)',
-                fontSize:      '9px',
-                fontWeight:    600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                /* Black text inside white ring — inverts correctly on any bg */
-                color:         '#000000',
-                whiteSpace:    'nowrap',
-                userSelect:    'none',
-                mixBlendMode:  'normal',   /* don't double-invert the label */
-              }}
-            >
-              {label}
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.div>
+      />
     </>
   );
 }

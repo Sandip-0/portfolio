@@ -162,18 +162,18 @@ export default function HeroDS() {
                 <a
                   href="#work"
                   className="btn-magnetic filled"
-                  data-cursor-label="View ↓"
                 >
-                  View Work &nbsp;<span style={{ fontSize: '18px', lineHeight: 1 }}>↓</span>
+                  <span>View Work</span>
+                  <span style={{ fontSize: '16px', lineHeight: 1 }}>↓</span>
                 </a>
                 <a
                   href={profile.socials.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-magnetic"
-                  data-cursor-label="Open ↗"
                 >
-                  GitHub &nbsp;<span style={{ fontSize: '18px', lineHeight: 1 }}>↗</span>
+                  <span>GitHub</span>
+                  <span style={{ fontSize: '16px', lineHeight: 1 }}>↗</span>
                 </a>
               </div>
             </LineReveal>

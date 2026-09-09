@@ -52,13 +52,25 @@ body {
   font-weight: 400;
   line-height: 1.65;
   overflow-x: hidden;
-  cursor: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* All interactive elements hide system cursor */
-a, button, [role="button"], input, textarea, select { cursor: none; }
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  /* All interactive elements hide system cursor on desktop mouse devices */
+  a, button, [role="button"], input, textarea, select { 
+    cursor: none; 
+  }
+}
+
+@media (hover: none) or (pointer: coarse) {
+  body, a, button, [role="button"], input, textarea, select {
+    cursor: auto !important;
+  }
+}
 
 /* ─── Scrollbar ──────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
@@ -151,10 +163,11 @@ a, button, [role="button"], input, textarea, select { cursor: none; }
 .btn-magnetic {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 13px 30px;
+  padding: clamp(10px, 2vw, 14px) clamp(20px, 3.5vw, 32px);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: clamp(11px, 1.2vw, 13px);
   font-weight: 400;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -162,15 +175,41 @@ a, button, [role="button"], input, textarea, select { cursor: none; }
   color: var(--charcoal);
   background: transparent;
   border-radius: 100px;
-  cursor: none;
+  cursor: pointer;
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  transition: color 0.4s ease, transform 0.25s ease;
+  transition: color 0.4s ease, transform 0.25s ease, background 0.3s ease;
   vertical-align: middle;
+  max-width: 100%;
+  white-space: nowrap;
+  isolation: isolate;
 }
 
-/* Sweep fill from left */
+@media (hover: hover) and (pointer: fine) {
+  .btn-magnetic {
+    cursor: none;
+  }
+  .project-row {
+    cursor: none;
+  }
+}
+
+@media (hover: none) or (pointer: coarse) {
+  .project-row {
+    cursor: pointer !important;
+  }
+}
+
+/* Ensure all text & icon children always sit above the sweep animation */
+.btn-magnetic > * {
+  position: relative;
+  z-index: 2;
+  transition: color 0.35s ease;
+  pointer-events: none;
+}
+
+/* Sweep fill from left — sits above button base, but strictly UNDER text children */
 .btn-magnetic::before {
   content: '';
   position: absolute;
@@ -180,11 +219,30 @@ a, button, [role="button"], input, textarea, select { cursor: none; }
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 .btn-magnetic:hover::before { transform: scaleX(1); }
-.btn-magnetic > * { position: relative; z-index: 1; }
-.btn-magnetic:hover { color: var(--cream); transform: scale(1.02); }
+
+.btn-magnetic:hover { 
+  color: #f7f4ee !important; 
+  transform: scale(1.02); 
+}
+.btn-magnetic:hover,
+.btn-magnetic:hover * {
+  color: #f7f4ee !important;
+}
+
+/* Mobile tap feedback */
+@media (hover: none) or (pointer: coarse) {
+  .btn-magnetic:active {
+    background: var(--charcoal) !important;
+    color: #f7f4ee !important;
+  }
+  .btn-magnetic:active > * {
+    color: #f7f4ee !important;
+  }
+}
 
 /* Filled variant */
 .btn-magnetic.filled {

@@ -101,20 +101,18 @@ export default function CurvedTransition({
             <a
               href={badgeHref}
               className="btn-magnetic"
-              data-cursor-label="View ↓"
               style={{
-                background: 'var(--cream)',
                 borderColor: 'var(--border-dark)',
-                color: 'var(--charcoal)',
                 padding: '9px 24px',
                 fontSize: '11px',
                 boxShadow: '0 12px 30px rgba(17,17,17,0.12)',
                 backdropFilter: 'blur(10px)',
                 letterSpacing: '0.12em',
+                background: 'var(--cream)',
               }}
             >
               <span>{badge}</span>
-              <span style={{ fontSize: '14px', color: 'var(--accent)' }}>↓</span>
+              <span style={{ fontSize: '14px', color: 'inherit' }}>↓</span>
             </a>
           ) : (
             <span

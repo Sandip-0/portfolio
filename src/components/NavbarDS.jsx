@@ -63,7 +63,7 @@ export default function NavbarDS({ onOpenResume }) {
           className="btn-magnetic hidden md:inline-flex"
           style={{ fontSize: '11px', padding: '10px 22px' }}
         >
-          Resume
+          <span>Resume</span>
           <span style={{ fontSize: '16px', lineHeight: 1 }}>↗</span>
         </button>
 

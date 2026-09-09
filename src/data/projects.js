@@ -6,7 +6,13 @@ export const projectCategories = [
   { id: "web",   label: "Software & Web" }
 ];
 
-export const projects = [
+export function getYouTubeId(url) {
+  if (!url) return null;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  return match ? match[1] : null;
+}
+
+const rawProjects = [
   {
     id: "arxiv-research-agent",
     title: "ArXiv Multi-Agent Research Assistant",
@@ -30,6 +36,9 @@ export const projects = [
     ],
     githubUrl: "https://github.com/Sandip-0/arxiv-research-agent",
     liveUrl:   "https://arxiv-research-agent-sandip.streamlit.app",
+    videoUrl:  "https://www.youtube.com/watch?v=YVsJep9qbqQ",
+    embedUrl:  "https://www.youtube.com/embed/YVsJep9qbqQ",
+    videoId:   "YVsJep9qbqQ",
     color:     "from-purple-500/20 via-indigo-500/10 to-transparent",
     accentColor: "#7c3aed"
   },
@@ -57,6 +66,9 @@ export const projects = [
     ],
     githubUrl: "https://github.com/Sandip-0/InsightForge-RAG",
     liveUrl: "https://insightforge-sandip.streamlit.app",
+    videoUrl: "https://www.youtube.com/watch?v=f42Db4xljdA",
+    embedUrl: "https://www.youtube.com/embed/f42Db4xljdA",
+    videoId:  "f42Db4xljdA",
     color: "from-cyan-500/20 via-blue-500/10 to-transparent",
     accentColor: "#06b6d4"
   },
@@ -249,3 +261,14 @@ export const projects = [
     accentColor: "#3b82f6"
   }
 ];
+
+export const projects = rawProjects.map((p) => {
+  const videoId = p.videoId || (p.videoUrl ? getYouTubeId(p.videoUrl) : null);
+  const embedUrl = p.embedUrl || (videoId ? `https://www.youtube.com/embed/${videoId}` : null);
+  return {
+    ...p,
+    videoId,
+    embedUrl,
+  };
+});
+
