@@ -97,6 +97,7 @@ const rawProjects = [
     ],
     githubUrl: "https://github.com/Sandip-0/credit-risk-prediction",
     liveUrl: "https://credit-risk-prediction-sandip0.streamlit.app",
+    videoUrl: "https://youtu.be/xU33JwIeRvY",
     color: "from-emerald-500/20 via-blue-500/10 to-transparent",
     accentColor: "#10b981"
   },
@@ -117,6 +118,7 @@ const rawProjects = [
     ],
     githubUrl: "https://github.com/Sandip-0/sales-forecasting",
     liveUrl: "https://sales-forecasting-sandip.streamlit.app",
+    videoUrl: "https://youtu.be/XTuZnobn8WU",
     color: "from-amber-500/20 via-orange-500/10 to-transparent",
     accentColor: "#f59e0b"
   },
@@ -239,26 +241,6 @@ const rawProjects = [
     liveUrl: "https://alex-ebon.vercel.app",
     color: "from-cyan-500/20 via-teal-500/10 to-transparent",
     accentColor: "#14b8a6"
-  },
-  {
-    id: "newspulse",
-    title: "NewsPulse Real-Time Aggregator",
-    tagline: "Categorized Global News Discovery Portal",
-    category: "web",
-    featured: false,
-    badge: "Web App",
-    techStack: ["React", "JavaScript", "News API", "Bootstrap", "Vercel"],
-    overview: "A dynamic real-time news application delivering categorized global headlines (Technology, Business, Science, Sports) with infinite paging and search filters.",
-    problemSolved: "Streamlines headline consumption by aggregating diverse news sources into an uncluttered, fast-loading feed.",
-    keyMetrics: [
-      { label: "Frontend", value: "React" },
-      { label: "Deployment", value: "Live Vercel" },
-      { label: "Data Source", value: "REST API Feed" }
-    ],
-    githubUrl: "https://github.com/Sandip-0/newsapp",
-    liveUrl: "https://newsapp-one-nu.vercel.app",
-    color: "from-blue-500/20 via-indigo-500/10 to-transparent",
-    accentColor: "#3b82f6"
   }
 ];
 
