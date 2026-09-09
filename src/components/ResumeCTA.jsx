@@ -56,7 +56,9 @@ export default function ResumeCTA({ onOpenResume }) {
 
               <a
                 href={profile.resumePdf || "/resume.pdf"}
-                download="Sandip_Adak_Resume.pdf"
+                download={profile.resumePdf && profile.resumePdf.startsWith('http') ? undefined : "Sandip_Adak_Resume.pdf"}
+                target={profile.resumePdf && profile.resumePdf.startsWith('http') ? "_blank" : undefined}
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#07090e] hover:bg-white/[0.06] border border-white/[0.12] text-slate-200 hover:text-white font-semibold text-sm transition-all"
               >
                 <Download className="w-4 h-4 text-cyan-400" />

@@ -1,11 +1,39 @@
 export const projectCategories = [
-  { id: "all", label: "All Projects" },
-  { id: "ai", label: "AI & RAG" },
-  { id: "ml", label: "ML & Data Science" },
-  { id: "web", label: "Software & Web" }
+  { id: "all",   label: "All Projects" },
+  { id: "agent", label: "Agentic AI" },
+  { id: "ai",    label: "AI & RAG" },
+  { id: "ml",    label: "ML & Data Science" },
+  { id: "web",   label: "Software & Web" }
 ];
 
 export const projects = [
+  {
+    id: "arxiv-research-agent",
+    title: "ArXiv Multi-Agent Research Assistant",
+    tagline: "AI-Powered Scientific Research & Synthesis Engine",
+    category: "agent",
+    featured: true,
+    badge: "Agentic AI — Latest",
+    techStack: ["Python", "Multi-Agent AI", "arXiv API", "PyTorch", "LangChain", "Streamlit"],
+    overview: "An AI-powered multi-agent research assistant that searches arXiv papers, generates scientific syntheses, compares benchmarks, creates PyTorch implementations, and provides context-aware expert Q&A through a modern Streamlit dashboard.",
+    bulletPoints: [
+      "Built a multi-agent AI system where specialized sub-agents collaboratively search arXiv, retrieve relevant papers, synthesize findings, and generate PyTorch code implementations.",
+      "Integrated context-aware expert Q&A using retrieval-augmented generation to answer domain-specific research questions grounded in fetched papers.",
+      "Developed benchmark comparison and scientific synthesis modules that summarise state-of-the-art results across multiple papers in a clean Streamlit research dashboard."
+    ],
+    problemSolved: "Academic literature discovery and synthesis is extremely time-consuming. This multi-agent system automates the entire pipeline — from paper search to benchmark comparison and code generation — in one unified interface.",
+    keyMetrics: [
+      { label: "Agent Type",  value: "Multi-Agent AI" },
+      { label: "Data Source", value: "arXiv API" },
+      { label: "Code Gen",    value: "PyTorch Impl." },
+      { label: "Interface",   value: "Streamlit Cloud" }
+    ],
+    githubUrl: "https://github.com/Sandip-0/arxiv-research-agent",
+    liveUrl:   "https://arxiv-research-agent-sandip.streamlit.app",
+    color:     "from-purple-500/20 via-indigo-500/10 to-transparent",
+    accentColor: "#7c3aed"
+  },
+
   {
     id: "insightforge-rag",
     title: "InsightForge — AI-Powered RAG Document & Website Assistant",

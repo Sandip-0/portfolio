@@ -74,7 +74,9 @@ export default function ResumeModal({ onClose }) {
 
             <a
               href={profile.resumePdf || "/resume.pdf"}
-              download="Sandip_Adak_Resume.pdf"
+              download={profile.resumePdf && profile.resumePdf.startsWith('http') ? undefined : "Sandip_Adak_Resume.pdf"}
+              target={profile.resumePdf && profile.resumePdf.startsWith('http') ? "_blank" : undefined}
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-xs font-mono text-slate-200 transition-colors"
             >
               <Download className="w-3.5 h-3.5 text-cyan-400" />
