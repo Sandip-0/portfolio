@@ -25,13 +25,9 @@ export default function CurvedTransition({
     offset: ['start end', 'end start'],
   });
 
-  // Fixed container height prevents layout shifts and scroll jumping ("unknowing scroll")
-  // GPU scaleY flattens the curve visually without altering DOM document height
-  const curveScaleY = useTransform(scrollYProgress, [0, 0.45, 0.85], [1, 0.15, 0]);
-
-  // Parallax float for the center badge: travels smoothly with GPU transform
-  const badgeY = useTransform(scrollYProgress, [0, 0.5, 1], [30, 0, -30]);
-  const badgeScale = useTransform(scrollYProgress, [0, 0.35, 0.7], [0.9, 1, 0.95]);
+  // Parallax float for the center badge: moves smoothly across the seam as you scroll
+  const badgeY = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -15]);
+  const badgeScale = useTransform(scrollYProgress, [0, 0.35, 0.7], [0.95, 1, 0.98]);
 
   return (
     <div
@@ -40,47 +36,46 @@ export default function CurvedTransition({
         position: 'relative',
         width: '100%',
         background: bg,
-        overflow: 'visible',
-        zIndex: 20,
-        pointerEvents: 'none',
+        zIndex: 2,
+        marginBottom: '-1px',
+        marginTop: '-1px',
       }}
     >
-      {/* ── Dennis Snellenberg rounded curve (Stable Fixed Height) ── */}
+      {/* ── Solid Architectural Curve (No flattening, zero bleeding) ── */}
       <div
         style={{
           width: '100%',
           height: `${maxHeight}px`,
-          overflow: 'hidden',
           position: 'relative',
           display: 'flex',
           justifyContent: 'center',
+          overflow: 'hidden',
         }}
       >
-        <motion.svg
+        <svg
           viewBox="0 0 1440 120"
           preserveAspectRatio="none"
           style={{
             width: '100%',
             height: '100%',
             display: 'block',
-            scaleY: curveScaleY,
-            transformOrigin: direction === 'up' ? 'bottom center' : 'top center',
+            overflow: 'visible',
           }}
         >
           {direction === 'up' ? (
-            /* Upward convex arch */
+            /* Upward convex arch with 6px overlap to eliminate sub-pixel seam */
             <path
-              d="M 0,120 Q 720,0 1440,120 L 1440,120 L 0,120 Z"
+              d="M 0,120 Q 720,0 1440,120 L 1440,126 L 0,126 Z"
               fill={fill}
             />
           ) : (
-            /* Downward concave curve */
+            /* Downward concave curve with 6px overlap */
             <path
-              d="M 0,0 Q 720,120 1440,0 L 1440,0 L 0,0 Z"
+              d="M 0,0 Q 720,120 1440,0 L 1440,-6 L 0,-6 Z"
               fill={fill}
             />
           )}
-        </motion.svg>
+        </svg>
       </div>
 
       {/* ── Floating Parallax Seam Badge ───────────────────────── */}
@@ -93,7 +88,7 @@ export default function CurvedTransition({
             x: '-50%',
             y: badgeY,
             scale: badgeScale,
-            zIndex: 30,
+            zIndex: 10,
             pointerEvents: 'auto',
           }}
         >
@@ -105,7 +100,7 @@ export default function CurvedTransition({
                 borderColor: 'var(--border-dark)',
                 padding: '9px 24px',
                 fontSize: '11px',
-                boxShadow: '0 12px 30px rgba(17,17,17,0.12)',
+                boxShadow: '0 10px 25px rgba(17,17,17,0.08)',
                 backdropFilter: 'blur(10px)',
                 letterSpacing: '0.12em',
                 background: 'var(--cream)',
@@ -126,7 +121,7 @@ export default function CurvedTransition({
                 padding: '8px 20px',
                 borderRadius: '100px',
                 color: 'var(--charcoal)',
-                boxShadow: '0 10px 28px rgba(17,17,17,0.10)',
+                boxShadow: '0 10px 25px rgba(17,17,17,0.08)',
                 letterSpacing: '0.12em',
                 fontSize: '10px',
               }}

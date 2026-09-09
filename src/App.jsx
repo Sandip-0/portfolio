@@ -64,7 +64,7 @@ export default function App() {
           />
 
           {/* ── Slide 2: Work ────────────────────────────────────────── */}
-          <SlideSection zIndex={2} roundedTop={true} bg="var(--cream)">
+          <SlideSection zIndex={2} roundedTop={false} bg="var(--cream)">
             <WorkList />
           </SlideSection>
 
@@ -79,7 +79,7 @@ export default function App() {
           />
 
           {/* ── Slide 3: About ───────────────────────────────────────── */}
-          <SlideSection zIndex={3} roundedTop={true} bg="var(--cream-dark)">
+          <SlideSection zIndex={3} roundedTop={false} bg="var(--cream-dark)">
             <AboutDS />
           </SlideSection>
 
@@ -94,7 +94,7 @@ export default function App() {
           />
 
           {/* ── Slide 4: Skills Marquee ──────────────────────────────── */}
-          <SlideSection zIndex={4} roundedTop={true} bg="var(--cream)">
+          <SlideSection zIndex={4} roundedTop={false} bg="var(--cream)">
             <SkillsMarquee />
           </SlideSection>
 
@@ -109,7 +109,7 @@ export default function App() {
           />
 
           {/* ── Slide 5: Experience & Certifications ─────────────────── */}
-          <SlideSection zIndex={5} roundedTop={true} bg="var(--cream-dark)">
+          <SlideSection zIndex={5} roundedTop={false} bg="var(--cream-dark)">
             <ExperienceDS />
           </SlideSection>
 

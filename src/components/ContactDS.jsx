@@ -126,6 +126,7 @@ export default function ContactDS() {
           height: 'clamp(80px, 9vw, 120px)',
           background: 'var(--cream-dark)',
           overflow: 'visible',
+          marginBottom: '-1px',
         }}
       >
         <svg

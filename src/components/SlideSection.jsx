@@ -14,8 +14,8 @@ export default function SlideSection({
   id,
   zIndex = 1,
   bg = 'var(--cream)',
-  roundedTop = true,
-  enableParallax = true,
+  roundedTop = false,
+  enableParallax = false,
   className = '',
   style = {},
 }) {
@@ -26,9 +26,9 @@ export default function SlideSection({
     offset: ['start start', 'end start'],
   });
 
-  // Outgoing depth: content shifts slightly and fades when being scrolled past
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0px', enableParallax ? '-40px' : '0px']);
-  const contentOpacity = useTransform(scrollYProgress, [0.75, 1], [1, enableParallax ? 0.75 : 1]);
+  // Smooth outgoing depth without jumping layout height
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0px', enableParallax ? '-20px' : '0px']);
+  const contentOpacity = useTransform(scrollYProgress, [0.8, 1], [1, enableParallax ? 0.85 : 1]);
 
   return (
     <div
