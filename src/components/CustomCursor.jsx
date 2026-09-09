@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * Dennis Snellenberg–style Dual-Element Cursor:
  * 1. Small solid dot that tracks the mouse pointer with zero latency.
  * 2. Outer follower ring that lags behind with smooth lerp physics.
- * 3. Interactive Zoom Effect: Smoothly expands/zooms up when hovering over
- *    buttons, links, project rows, and cards.
- * 4. Uses mix-blend-mode: difference with white to automatically adapt:
- *    → Inverts to black/charcoal on light cream sections.
- *    → Inverts to crisp white on dark charcoal sections (Contact, Footer).
+ * 3. Interactive Zoom Effect:
+ *    - On Projects & Cards: Zooms to 80px solid bubble with "VIEW →" / "DEMO ▶" text.
+ *    - On Buttons: Zooms to 58px hollow ring framing the button cleanly without obscuring text.
+ *    - Default: 38px hollow ring + 8px dot.
+ * 4. Uses mix-blend-mode: difference with white to automatically adapt across light & dark sections.
  */
 export default function CustomCursor() {
   const dotRef  = useRef(null);
@@ -18,6 +18,7 @@ export default function CustomCursor() {
   const rafRef  = useRef(null);
 
   const [hovered, setHovered] = useState(false);
+  const [label,   setLabel]   = useState('');
   const [clicked, setClicked] = useState(false);
   const [hidden,  setHidden]  = useState(true);
   const [isTouch, setIsTouch] = useState(false);
@@ -50,16 +51,42 @@ export default function CustomCursor() {
     };
     rafRef.current = requestAnimationFrame(tick);
 
-    // ── Mouse tracking ─────────────────────────────────────────
+    // ── Mouse tracking & element detection ─────────────────────
     const onMove = (e) => {
       pos.mx = e.clientX;
       pos.my = e.clientY;
       if (hidden) setHidden(false);
+
+      // Detect interactive elements under or nearest the pointer
+      const target = e.target.closest(
+        'a, button, [role="button"], .project-row, .btn-magnetic, .cert-card, [data-cursor-label]'
+      );
+
+      if (target) {
+        setHovered(true);
+        // Magnetic buttons keep clean hollow zoom without text
+        if (target.classList?.contains('btn-magnetic')) {
+          setLabel('');
+        } else if (target.dataset?.cursorLabel) {
+          setLabel(target.dataset.cursorLabel);
+        } else if (target.classList?.contains('project-row')) {
+          setLabel(target.dataset?.cursorLabel || 'View →');
+        } else {
+          setLabel('');
+        }
+      } else {
+        setHovered(false);
+        setLabel('');
+      }
     };
 
     const onMouseDown = () => setClicked(true);
     const onMouseUp   = () => setClicked(false);
-    const onLeave     = () => setHidden(true);
+    const onLeave     = () => {
+      setHidden(true);
+      setHovered(false);
+      setLabel('');
+    };
     const onEnter     = () => setHidden(false);
 
     window.addEventListener('mousemove', onMove, { passive: true });
@@ -68,29 +95,6 @@ export default function CustomCursor() {
     document.addEventListener('mouseleave', onLeave);
     document.addEventListener('mouseenter', onEnter);
 
-    // ── Interactive Hover Detection (Triggers Zoom Effect) ─────
-    const onElementEnter = () => setHovered(true);
-    const onElementLeave = () => setHovered(false);
-
-    const selectors = 'a, button, [role="button"], .project-row, .btn-magnetic, .skill-tag, .cert-card, input, textarea, select';
-    let targets = [];
-
-    const bindAll = () => {
-      targets.forEach((el) => {
-        el.removeEventListener('mouseenter', onElementEnter);
-        el.removeEventListener('mouseleave', onElementLeave);
-      });
-      targets = [...document.querySelectorAll(selectors)];
-      targets.forEach((el) => {
-        el.addEventListener('mouseenter', onElementEnter);
-        el.addEventListener('mouseleave', onElementLeave);
-      });
-    };
-
-    const observer = new MutationObserver(bindAll);
-    observer.observe(document.body, { childList: true, subtree: true });
-    bindAll();
-
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('mousemove', onMove);
@@ -98,28 +102,25 @@ export default function CustomCursor() {
       window.removeEventListener('mouseup',   onMouseUp);
       document.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('mouseenter', onEnter);
-      observer.disconnect();
-      targets.forEach((el) => {
-        el.removeEventListener('mouseenter', onElementEnter);
-        el.removeEventListener('mouseleave', onElementLeave);
-      });
     };
   }, []);
 
   if (isTouch) return null;
 
-  // Zoomed dimensions when hovering interactive elements
-  const ringSize = hovered ? (clicked ? 52 : 64) : (clicked ? 28 : 38);
+  // Zoomed dimensions based on element type
+  const ringSize = label 
+    ? (clicked ? 70 : 82)
+    : (hovered ? (clicked ? 48 : 58) : (clicked ? 28 : 38));
 
   return (
     <>
-      {/* ── 1. The Tracking Dot (Instant response) ─────────────── */}
+      {/* ── 1. The Tracking Dot (Fades out when label text is shown) */}
       <motion.div
         ref={dotRef}
         aria-hidden="true"
         animate={{
-          scale: clicked ? 0.75 : (hovered ? 1.2 : 1),
-          opacity: hidden ? 0 : 1,
+          scale:   clicked ? 0.75 : (hovered ? 1.2 : 1),
+          opacity: (hidden || label) ? 0 : 1,
         }}
         transition={{ duration: 0.15 }}
         style={{
@@ -137,15 +138,15 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* ── 2. The Follower Ring (Lerp physics + Zoom Effect) ─── */}
+      {/* ── 2. The Follower Ring (Lerp physics + Zoom Effect + Text Label) ─── */}
       <motion.div
         ref={ringRef}
         aria-hidden="true"
         animate={{
           width:        ringSize,
           height:       ringSize,
-          borderWidth:  hovered ? '2px' : '1.5px',
-          background:   hovered ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+          borderWidth:  label ? '0px' : (hovered ? '2px' : '1.5px'),
+          background:   label ? '#ffffff' : 'transparent',
           opacity:      hidden ? 0 : 1,
         }}
         transition={{
@@ -164,9 +165,37 @@ export default function CustomCursor() {
           pointerEvents: 'none',
           zIndex:        9999998,
           mixBlendMode:  'difference',
+          display:       'flex',
+          alignItems:    'center',
+          justifyContent:'center',
           willChange:    'transform, width, height',
         }}
-      />
+      >
+        <AnimatePresence>
+          {hovered && label && (
+            <motion.span
+              key={label}
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily:    'var(--font-sans)',
+                fontSize:      '10px',
+                fontWeight:    600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color:         '#000000',
+                whiteSpace:    'nowrap',
+                userSelect:    'none',
+                lineHeight:    1,
+              }}
+            >
+              {label}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </>
   );
 }
