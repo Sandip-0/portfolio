@@ -15,11 +15,18 @@ export default function useSmoothScroll() {
     document.documentElement.style.setProperty('--scroll-height', `${document.body.scrollHeight}px`);
 
     const onWheel = (e) => {
+      if (document.body.dataset.modalOpen === 'true') return;
       e.preventDefault();
       targetY = Math.max(0, Math.min(targetY + e.deltaY, document.body.scrollHeight - window.innerHeight));
     };
 
     const tick = () => {
+      if (document.body.dataset.modalOpen === 'true') {
+        currentY = window.scrollY;
+        targetY = currentY;
+        raf = requestAnimationFrame(tick);
+        return;
+      }
       currentY += (targetY - currentY) * ease;
       if (Math.abs(targetY - currentY) < 0.5) currentY = targetY;
       window.scrollTo(0, currentY);

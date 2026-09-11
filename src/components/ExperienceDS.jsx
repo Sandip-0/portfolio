@@ -6,10 +6,12 @@ import { profile } from '../data/profile';
 function CertLightbox({ cert, onClose }) {
   // Lock page scroll while lightbox is open
   useEffect(() => {
+    document.body.dataset.modalOpen = 'true';
     document.body.style.overflow = 'hidden';
     const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKey);
     return () => {
+      delete document.body.dataset.modalOpen;
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKey);
     };
@@ -26,7 +28,7 @@ function CertLightbox({ cert, onClose }) {
         style={{
           cursor: 'none',
           overscrollBehavior: 'contain',
-          WebkitOverflowScrolling: 'touch',
+          touchAction: 'none',
         }}
       >
         <motion.div
@@ -71,22 +73,20 @@ function CertLightbox({ cert, onClose }) {
             ×
           </button>
 
-          {/* Certificate image — scroll contained inside, never leaks to page */}
+          {/* Keep the complete certificate visible without creating a scrollable panel. */}
           <div
             style={{
-              overflowY: 'auto',
-              overscrollBehavior: 'contain',
-              maxHeight: '75vh',
+              maxWidth: 'calc(100vw - 32px)',
+              maxHeight: 'calc(100svh - 152px)',
               borderRadius: '8px',
-              WebkitOverflowScrolling: 'touch',
             }}
-            onWheel={e => e.stopPropagation()}
           >
             <img
               src={cert.image}
               alt={cert.title}
               style={{
-                maxWidth: '90vw',
+                maxWidth: '100%',
+                maxHeight: 'calc(100svh - 152px)',
                 width: '100%',
                 objectFit: 'contain',
                 borderRadius: '8px',
