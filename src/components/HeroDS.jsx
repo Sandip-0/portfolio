@@ -198,7 +198,6 @@ export default function HeroDS() {
             >
               {/* Portrait Frame */}
               <div
-                className="group relative overflow-hidden"
                 data-cursor-label="Sandip"
                 style={{
                   aspectRatio: '3/4',
@@ -206,9 +205,11 @@ export default function HeroDS() {
                   background: 'var(--cream-dark)',
                   boxShadow: '0 32px 80px rgba(17,17,17,0.13), 0 4px 16px rgba(17,17,17,0.06)',
                   border: '1px solid var(--border)',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                {/* User photo */}
+                {/* User photo — explicit filter:none prevents any global filter/invert inheritance */}
                 <motion.img
                   src="/images/sandip-hero.jpg"
                   alt={profile.name}
@@ -218,9 +219,12 @@ export default function HeroDS() {
                     objectFit: 'cover',
                     objectPosition: 'center 35%',
                     filter: 'contrast(1.03) brightness(0.98)',
-                    transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                    WebkitFilter: 'contrast(1.03) brightness(0.98)',
+                    display: 'block',
+                    mixBlendMode: 'normal',
                   }}
                   whileHover={{ scale: 1.04 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 />
 
                 {/* Subtle warm editorial vignette overlay */}

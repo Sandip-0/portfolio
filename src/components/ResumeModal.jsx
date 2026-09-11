@@ -32,9 +32,7 @@ export default function ResumeModal({ onClose }) {
     };
   }, [onClose]);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const pdfPath = profile.resumePdf || '/resume.pdf';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -64,20 +62,24 @@ export default function ResumeModal({ onClose }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={handlePrint}
+            {/* Print/View PDF — opens actual PDF in new tab */}
+            <a
+              href={pdfPath}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-xs font-mono text-cyan-300 transition-colors"
+              style={{ textDecoration: 'none' }}
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print / Save PDF</span>
-            </button>
+              <span>View / Print PDF</span>
+            </a>
 
+            {/* Download PDF — forces download of actual resume.pdf */}
             <a
-              href={profile.resumePdf || "/resume.pdf"}
-              download={profile.resumePdf && profile.resumePdf.startsWith('http') ? undefined : "Sandip_Adak_Resume.pdf"}
-              target={profile.resumePdf && profile.resumePdf.startsWith('http') ? "_blank" : undefined}
-              rel="noopener noreferrer"
+              href={pdfPath}
+              download="Sandip_Adak_Resume.pdf"
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-xs font-mono text-slate-200 transition-colors"
+              style={{ textDecoration: 'none' }}
             >
               <Download className="w-3.5 h-3.5 text-cyan-400" />
               <span>Download PDF</span>

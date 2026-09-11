@@ -17,7 +17,6 @@ const PROJECT_GRADIENTS = {
   'newspulse':              'linear-gradient(135deg, #3b82f6 0%, #1e1b4b 100%)',
 };
 
-// Category labels
 const CATEGORY_LABEL = {
   agent: 'Agentic AI',
   ai:    'AI & RAG',
@@ -26,17 +25,17 @@ const CATEGORY_LABEL = {
 };
 
 /**
- * Dennis Snellenberg–style Video Demo Modal:
- * Displays YouTube or MP4 demo video in a sleek dark overlay with 16:9 player,
- * tags, and direct links to GitHub and Live apps.
+ * Full-screen Video Demo Modal with YouTube embed.
  */
 function ProjectVideoModal({ project, onClose }) {
   useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = '';
+    };
   }, [onClose]);
 
   if (!project) return null;
@@ -65,7 +64,7 @@ function ProjectVideoModal({ project, onClose }) {
           color: 'var(--cream)',
         }}
       >
-        {/* Modal Header */}
+        {/* Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -88,7 +87,6 @@ function ProjectVideoModal({ project, onClose }) {
               {project.title}
             </h3>
           </div>
-
           <button
             type="button"
             onClick={onClose}
@@ -113,30 +111,18 @@ function ProjectVideoModal({ project, onClose }) {
           </button>
         </div>
 
-        {/* 16:9 Video Embed */}
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: '16/9',
-          background: '#000000',
-        }}>
+        {/* 16:9 Video */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: '#000' }}>
           <iframe
             src={`${project.embedUrl}?autoplay=1&rel=0`}
             title={project.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              border: 'none',
-            }}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
           />
         </div>
 
-        {/* Modal Footer with Actions */}
+        {/* Footer */}
         <div style={{
           padding: '18px 24px',
           display: 'flex',
@@ -148,34 +134,25 @@ function ProjectVideoModal({ project, onClose }) {
         }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {project.techStack?.slice(0, 4).map((tech, i) => (
-              <span
-                key={i}
-                style={{
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-sans)',
-                  color: 'rgba(255,255,255,0.7)',
-                  background: 'rgba(255,255,255,0.06)',
-                  padding: '3px 10px',
-                  borderRadius: '100px',
-                }}
-              >
+              <span key={i} style={{
+                fontSize: '11px',
+                fontFamily: 'var(--font-sans)',
+                color: 'rgba(255,255,255,0.7)',
+                background: 'rgba(255,255,255,0.06)',
+                padding: '3px 10px',
+                borderRadius: '100px',
+              }}>
                 {tech}
               </span>
             ))}
           </div>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-magnetic"
-              style={{
-                padding: '7px 16px',
-                fontSize: '11px',
-                borderColor: 'rgba(255,255,255,0.25)',
-                color: '#ffffff',
-              }}
+              style={{ padding: '7px 16px', fontSize: '11px', borderColor: 'rgba(255,255,255,0.25)', color: '#ffffff' }}
             >
               <span>GitHub</span> <span style={{ fontSize: '13px' }}>↗</span>
             </a>
@@ -185,13 +162,7 @@ function ProjectVideoModal({ project, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-magnetic filled"
-                style={{
-                  padding: '7px 16px',
-                  fontSize: '11px',
-                  background: 'var(--accent)',
-                  color: '#111111',
-                  borderColor: 'var(--accent)',
-                }}
+                style={{ padding: '7px 16px', fontSize: '11px', background: 'var(--accent)', color: '#111111', borderColor: 'var(--accent)' }}
               >
                 <span>Live App</span> <span style={{ fontSize: '13px' }}>↗</span>
               </a>
@@ -204,25 +175,15 @@ function ProjectVideoModal({ project, onClose }) {
 }
 
 /**
- * The Dennis Snellenberg signature hover effect:
- * The preview image FOLLOWS the cursor inside the row.
+ * Square project card — thumbnail + hover overlay with actions.
+ * Works on desktop (hover) and mobile (tap).
  */
-function ProjectRow({ project, index, onOpenVideo }) {
-  const ref    = useRef(null);
+function ProjectCard({ project, index, onOpenVideo }) {
+  const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [hovered, setHovered] = useState(false);
 
-  const [hovered,  setHovered]  = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const previewRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleRowClick = (e) => {
-    // If clicking an interactive button or link, let it handle the event
+  const handleCardClick = (e) => {
     if (e.target.closest('a') || e.target.closest('button')) return;
     if (project.videoUrl) {
       onOpenVideo(project);
@@ -238,78 +199,76 @@ function ProjectRow({ project, index, onOpenVideo }) {
   return (
     <motion.div
       ref={ref}
-      className="project-row"
-      data-cursor-label={project.videoUrl ? "Demo ▶" : "View →"}
-      onClick={handleRowClick}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      onClick={handleCardClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onMouseMove={handleMouseMove}
+      data-cursor-label={project.videoUrl ? 'Demo ▶' : 'View →'}
       style={{
         position: 'relative',
+        borderRadius: '12px',
         overflow: 'hidden',
-        borderTop: '1px solid var(--border)',
+        cursor: 'pointer',
+        background: 'var(--cream-dark)',
+        border: '1px solid var(--border)',
+        display: 'flex',
+        flexDirection: 'column',
+        aspectRatio: '1/1.05', // slightly taller than square for visual comfort
       }}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, delay: index * 0.055, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* ── Cursor-following preview card ─────────────────────── */}
-      <motion.div
-        ref={previewRef}
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          width: '260px',
-          aspectRatio: '16/10',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          zIndex: 20,
-          top: 0,
-          left: 0,
-          x: mousePos.x - 130,
-          y: mousePos.y - 80,
-          boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
-        }}
-        animate={{
-          opacity: hovered ? 1 : 0,
-          scale:   hovered ? 1 : 0.82,
-          rotate:  hovered ? (index % 2 === 0 ? 2 : -2) : 0, // slight tilt
-        }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      >
+      {/* ── Thumbnail area (top 60%) ── */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        flex: '0 0 60%',
+        overflow: 'hidden',
+        background: '#111',
+      }}>
         {project.videoId ? (
-          <div style={{ width: '100%', height: '100%', position: 'relative', background: '#000' }}>
+          <>
             <img
               src={`https://img.youtube.com/vi/${project.videoId}/hqdefault.jpg`}
               alt={project.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.5s ease',
+                transform: hovered ? 'scale(1.06)' : 'scale(1)',
+              }}
             />
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'rgba(0,0,0,0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+            {/* Play button overlay */}
+            <motion.div
+              animate={{ opacity: hovered ? 1 : 0.7, scale: hovered ? 1.1 : 1 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(0,0,0,0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <div style={{
-                width: '38px',
-                height: '38px',
+                width: '44px',
+                height: '44px',
                 borderRadius: '50%',
-                background: 'rgba(247, 244, 238, 0.92)',
+                background: 'rgba(247,244,238,0.9)',
                 color: '#111',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '13px',
+                fontSize: '14px',
                 paddingLeft: '3px',
                 boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
               }}>
                 ▶
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </>
         ) : (
           <div style={{
             width: '100%',
@@ -318,13 +277,15 @@ function ProjectRow({ project, index, onOpenVideo }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px',
+            padding: '24px',
+            transition: 'transform 0.5s ease',
+            transform: hovered ? 'scale(1.04)' : 'scale(1)',
           }}>
             <span style={{
               fontFamily: 'var(--font-heading)',
               fontWeight: 350,
               color: '#f0ece6',
-              fontSize: '15px',
+              fontSize: 'clamp(13px, 1.4vw, 18px)',
               textAlign: 'center',
               lineHeight: 1.4,
               letterSpacing: '-0.01em',
@@ -333,188 +294,163 @@ function ProjectRow({ project, index, onOpenVideo }) {
             </span>
           </div>
         )}
-      </motion.div>
 
-      {/* ── Row content ───────────────────────────────────────── */}
-      <div
-        className="flex items-center justify-between py-6 md:py-7"
-        style={{
-          paddingLeft: '0',
-          paddingRight: '0',
-          transition: 'padding 0.3s ease',
-          paddingLeft: hovered ? '12px' : '0',
-        }}
-      >
-        {/* Left: index + title */}
-        <div className="flex items-center gap-5 md:gap-8 flex-1 min-w-0">
-          <span className="text-label shrink-0" style={{ color: 'var(--light)', minWidth: '28px' }}>
-            {num}
-          </span>
-          <div className="min-w-0">
-            <motion.h3
-              animate={{ x: hovered ? 8 : 0 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(18px, 2.2vw, 30px)',
-                fontWeight: 350,
-                color: 'var(--charcoal)',
-                lineHeight: 1.2,
-                letterSpacing: '-0.025em',
-              }}
-            >
-              {project.title}
-            </motion.h3>
-            <p className="text-label mt-1" style={{ color: 'var(--mid)' }}>
-              {project.tagline}
-            </p>
-
-            {/* Mobile quick actions (fully responsive on phones & tablets) */}
-            <div className="flex md:hidden items-center gap-3 mt-3 flex-wrap">
-              {project.videoUrl && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenVideo(project);
-                  }}
-                  className="text-label"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    color: '#111',
-                    background: 'var(--accent)',
-                    padding: '4px 10px',
-                    borderRadius: '100px',
-                    fontSize: '10px',
-                    border: 'none',
-                  }}
-                >
-                  <span>Video Demo</span>
-                  <span style={{ fontSize: '8px' }}>▶</span>
-                </button>
-              )}
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-label"
-                style={{ color: 'var(--mid)', fontSize: '10px' }}
-              >
-                GitHub ↗
-              </a>
-              {project.liveUrl && (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-label"
-                  style={{ color: 'var(--accent)', fontSize: '10px' }}
-                >
-                  Live ↗
-                </a>
-              )}
-            </div>
-          </div>
+        {/* Category badge */}
+        <div style={{
+          position: 'absolute',
+          top: '12px',
+          left: '12px',
+          background: 'rgba(17,17,17,0.75)',
+          backdropFilter: 'blur(8px)',
+          padding: '3px 10px',
+          borderRadius: '100px',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '9px',
+          fontWeight: 400,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'rgba(242,237,231,0.85)',
+        }}>
+          {CATEGORY_LABEL[project.category] || project.category}
         </div>
 
-        {/* Right: category + links (desktop) */}
-        <div className="hidden md:flex items-center gap-8 shrink-0 ml-8">
-          <span className="text-label" style={{ color: 'var(--mid)' }}>
-            {CATEGORY_LABEL[project.category] || project.category}
-          </span>
-          <div className="flex items-center gap-4">
-            {project.videoUrl && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenVideo(project);
-                }}
-                className="text-label"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  color: 'var(--charcoal)',
-                  background: 'rgba(200, 169, 110, 0.22)',
-                  border: '1px solid var(--accent)',
-                  padding: '5px 13px',
-                  borderRadius: '100px',
-                  cursor: 'pointer',
-                  fontSize: '10px',
-                  letterSpacing: '0.08em',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--charcoal)';
-                  e.currentTarget.style.color = '#f7f4ee';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(200, 169, 110, 0.22)';
-                  e.currentTarget.style.color = 'var(--charcoal)';
-                }}
-              >
-                <span>Video Demo</span>
-                <span style={{ fontSize: '9px', color: 'var(--accent)' }}>▶</span>
-              </button>
-            )}
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-label"
-              style={{ color: 'var(--mid)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--charcoal)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--mid)'}
-            >
-              GitHub ↗
-            </a>
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-label"
-                style={{ color: 'var(--accent)', textDecoration: 'none' }}
-              >
-                Live ↗
-              </a>
-            )}
-          </div>
+        {/* Index number */}
+        <div style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          background: 'rgba(17,17,17,0.55)',
+          backdropFilter: 'blur(8px)',
+          padding: '3px 8px',
+          borderRadius: '100px',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '9px',
+          color: 'rgba(242,237,231,0.55)',
+          letterSpacing: '0.08em',
+        }}>
+          {num}
         </div>
-
-        {/* Arrow that slides in on hover */}
-        <motion.span
-          animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -8 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '18px',
-            color: 'var(--charcoal)',
-            marginLeft: '16px',
-            flexShrink: 0,
-          }}
-        >
-          ↗
-        </motion.span>
       </div>
 
-      {/* Hover fill background */}
-      <motion.div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'var(--cream-dark)',
-          zIndex: -1,
-          originX: 0,
-        }}
-        animate={{ scaleX: hovered ? 1 : 0 }}
-        initial={{ scaleX: 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      />
+      {/* ── Card info (bottom 40%) ── */}
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '16px',
+        gap: '8px',
+      }}>
+        <div>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: 'clamp(14px, 1.3vw, 17px)',
+            fontWeight: 350,
+            color: 'var(--charcoal)',
+            lineHeight: 1.3,
+            letterSpacing: '-0.01em',
+            marginBottom: '4px',
+          }}>
+            {project.title}
+          </h3>
+          <p className="text-label" style={{ color: 'var(--mid)', fontSize: '10px', lineHeight: 1.4 }}>
+            {project.tagline}
+          </p>
+        </div>
+
+        {/* Tech tags — show top 3 */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '2px' }}>
+          {project.techStack.slice(0, 3).map((tech, i) => (
+            <span key={i} style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '9px',
+              color: 'var(--mid)',
+              background: 'var(--cream)',
+              border: '1px solid var(--border)',
+              padding: '2px 8px',
+              borderRadius: '100px',
+              letterSpacing: '0.04em',
+            }}>
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Action row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '4px',
+          flexWrap: 'wrap',
+        }}>
+          {project.videoUrl && (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onOpenVideo(project); }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                background: 'var(--charcoal)',
+                color: 'var(--cream)',
+                border: 'none',
+                padding: '5px 12px',
+                borderRadius: '100px',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                letterSpacing: '0.06em',
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                transition: 'background 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'var(--charcoal)'}
+            >
+              <span>Demo</span>
+              <span style={{ fontSize: '8px' }}>▶</span>
+            </button>
+          )}
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '10px',
+              color: 'var(--mid)',
+              textDecoration: 'none',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--charcoal)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--mid)'}
+          >
+            GitHub ↗
+          </a>
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                color: 'var(--accent)',
+                textDecoration: 'none',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                transition: 'color 0.2s',
+              }}
+            >
+              Live ↗
+            </a>
+          )}
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -530,7 +466,7 @@ export default function WorkList() {
         <div className="container-editorial">
 
           {/* Section header */}
-          <div ref={headRef} style={{ marginBottom: 'clamp(48px,8vw,96px)' }}>
+          <div ref={headRef} style={{ marginBottom: 'clamp(40px,7vw,80px)' }}>
             <div style={{ overflow: 'hidden', marginBottom: '16px' }}>
               <motion.span
                 className="text-label"
@@ -567,33 +503,38 @@ export default function WorkList() {
             </div>
           </div>
 
-          {/* Project rows */}
-          <div>
+          {/* ── Square card grid — 1 col mobile, 2 col tablet, 3 col desktop ── */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
+            gap: 'clamp(12px, 2vw, 24px)',
+            marginBottom: 'clamp(32px, 5vw, 56px)',
+          }}>
             {projects.map((project, i) => (
-              <ProjectRow
+              <ProjectCard
                 key={project.id}
                 project={project}
                 index={i}
                 onOpenVideo={setSelectedVideo}
               />
             ))}
+          </div>
 
-            {/* Final border + CTA */}
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', marginTop: '0' }}>
-              <a
-                href="https://github.com/Sandip-0"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-magnetic"
-              >
-                <span>All repositories on GitHub</span> <span style={{ fontSize: '15px' }}>↗</span>
-              </a>
-            </div>
+          {/* CTA */}
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
+            <a
+              href="https://github.com/Sandip-0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-magnetic"
+            >
+              <span>All repositories on GitHub</span> <span style={{ fontSize: '15px' }}>↗</span>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Video Modal Player */}
+      {/* Video Modal */}
       <AnimatePresence>
         {selectedVideo && (
           <ProjectVideoModal

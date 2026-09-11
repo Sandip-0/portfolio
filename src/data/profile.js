@@ -10,8 +10,9 @@ export const profile = {
   phone: "+91 9134460122",
   whatsapp: "https://wa.me/9134460122",
   
-  // PDF Resume path (Put your PDF in the 'public/' folder)
-  resumePdf: "/sandipupdatated.pdf",
+  // PDF Resume — put your PDF at public/resume.pdf
+  // To update: just replace public/resume.pdf with your new file — Vercel will auto-redeploy
+  resumePdf: '/resume.pdf',
 
   socials: {
     github:   "https://github.com/Sandip-0",
@@ -40,16 +41,16 @@ export const profile = {
       title: "AI-Machine Learning Engineer Certificate",
       issuer: "NSDC Skill India",
       tag: "Skill India Verified",
-      image: "/certs/certificate_AI-Machine Learning Engineer.pdf",
-      pdfPath: "/certs/certificate_AI-Machine Learning Engineer.pdf",
+      image: "/certs/certificate_AI-Machine Learning Engineer.png",
+      // pdfPath: "/certs/certificate_AI-Machine Learning Engineer.pdf",
       verifyUrl: "https://api-fe.skillindiadigital.gov.in/api/registry-course/getCertificatePresignedUrl/2026080917746156-500a3626-4c71-499d-a3c0-b5617c9f30b8"
     },
     {
       title: "AI-Data Engineering Analyst",
       issuer: "NSDC Skill India",
       tag: "Skill India Verified",
-      image:"certs/Al - Data Engineering Analyst.pdf",
-      pdfPath: "certs/Al - Data Engineering Analyst.pdf",
+      image:"certs/Al - Data Engineering Analyst.png",
+      // pdfPath: "certs/Al - Data Engineering Analyst.pdf",
       verifyUrl: "https://www.linkedin.com/in/sandip-adak-70586a2b3/details/certificationshttps://api-fe.skillindiadigital.gov.in/api/registry-course/getCertificatePresignedUrl/2026080917746156-30abc684-c033-40a9-836b-caa3d4b7be33/"
     },
     {
@@ -77,24 +78,24 @@ export const profile = {
       title: "Programming in Modern C++",
       issuer: "NPTEL, IIT",
       tag: "IIT NPTEL",
-      image: "/certs/ProgramminginModernCpp.pdf",
-      pdfPath: "/certs/ProgramminginModernCpp.pdf",
+      image: "/certs/ProgramminginModernCpp.png",
+      // pdfPath: "/certs/ProgramminginModernCpp.pdf",
       verifyUrl: "https://www.linkedin.com/in/sandip-adak-70586a2b3/details/certificatiohttps://nptel.ac.in/noc/E_Certificate/NPTEL24CS125S105230110904268324ns/"
     },
     {
       title: "Python for Data Science",
       issuer: "Aptech (ASD)",
       tag: "Data Science",
-      image: "/certs/Python.pdf",
-      pdfPath: "/certs/Python.pdf",
+      image: "/certs/Python.png",
+      // pdfPath: "/certs/Python.pdf",
       verifyUrl: "https://www.linkedin.com/in/sandip-adak-70586a2b3/details/certifications/"
     },
     {
       title: "Python for Data Science",
       issuer: "Saylor ORG",
       tag: "Data Science",
-      image: "/certs/saylor-org.pdf",
-      pdfPath: "/certs/saylor-org.pdf",
+      image: "/certs/saylor-org.png",
+      // pdfPath: "/certs/saylor-org.pdf",
       verifyUrl: "https://learn.saylor.org/admin/tool/certificate/index.php?code=8338279784SA"
     },
     {
@@ -108,8 +109,8 @@ export const profile = {
       title: "Data Science Training Certificate",
       issuer: "ElevanceSkill",
       tag: "Internship",
-      image: "/certs/elevanceskill.pdf",
-      pdfPath: "/certs/elevanceskill.pdf",
+      image: "/certs/elevanceskill.png",
+      // pdfPath: "/certs/elevanceskill.pdf",
       verifyUrl: "https://www.linkedin.com/in/sandip-adak-70586a2b3/details/certifications/"
     },
     {
@@ -123,8 +124,8 @@ export const profile = {
       title: "React",
       issuer: "Aptech (ASD)",
       tag: "Data Science",
-      image: "/certs/React.pdf",
-      pdfPath: "/certs/React.pdf",
+      image: "/certs/React.png",
+      // pdfPath: "/certs/React.pdf",
       verifyUrl: "https://www.linkedin.com/in/sandip-adak-70586a2b3/details/certifications/"
     },
   ],

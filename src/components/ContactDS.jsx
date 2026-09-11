@@ -148,7 +148,9 @@ export default function ContactDS() {
 
         {/* ── Giant Floating Magnetic Circle CTA ────────────────── */}
         {/* Centered right at the apex of the curve, fully visible and interactive */}
+        {/* Hidden on mobile (< md) to prevent overlapping the contact section */}
         <motion.div
+          className="hidden md:block"
           style={{
             position: 'absolute',
             left: '50%',

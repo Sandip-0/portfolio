@@ -1,9 +1,20 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { profile } from '../data/profile';
 
 /* ─── Certificate Image Lightbox ─────────────────────────────────── */
 function CertLightbox({ cert, onClose }) {
+  // Lock page scroll while lightbox is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [onClose]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -12,7 +23,11 @@ function CertLightbox({ cert, onClose }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        style={{ cursor: 'none' }}
+        style={{
+          cursor: 'none',
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
+        }}
       >
         <motion.div
           initial={{ scale: 0.88, opacity: 0 }}
@@ -20,7 +35,14 @@ function CertLightbox({ cert, onClose }) {
           exit={{ scale: 0.88, opacity: 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           onClick={e => e.stopPropagation()}
-          style={{ position: 'relative', maxWidth: '90vw', maxHeight: '88vh' }}
+          style={{
+            position: 'relative',
+            maxWidth: '90vw',
+            maxHeight: '88vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
           {/* Close button */}
           <button
@@ -41,7 +63,7 @@ function CertLightbox({ cert, onClose }) {
               alignItems: 'center',
               justifyContent: 'center',
               zIndex: 10,
-              cursor: 'none',
+              cursor: 'pointer',
               boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
             }}
             data-cursor-label="Close"
@@ -49,19 +71,30 @@ function CertLightbox({ cert, onClose }) {
             ×
           </button>
 
-          {/* Certificate image */}
-          <img
-            src={cert.image}
-            alt={cert.title}
+          {/* Certificate image — scroll contained inside, never leaks to page */}
+          <div
             style={{
-              maxWidth: '90vw',
-              maxHeight: '85vh',
-              objectFit: 'contain',
+              overflowY: 'auto',
+              overscrollBehavior: 'contain',
+              maxHeight: '75vh',
               borderRadius: '8px',
-              display: 'block',
-              boxShadow: '0 40px 100px rgba(0,0,0,0.6)',
+              WebkitOverflowScrolling: 'touch',
             }}
-          />
+            onWheel={e => e.stopPropagation()}
+          >
+            <img
+              src={cert.image}
+              alt={cert.title}
+              style={{
+                maxWidth: '90vw',
+                width: '100%',
+                objectFit: 'contain',
+                borderRadius: '8px',
+                display: 'block',
+                boxShadow: '0 40px 100px rgba(0,0,0,0.6)',
+              }}
+            />
+          </div>
 
           {/* Caption */}
           <div style={{
@@ -118,6 +151,7 @@ function CertLightbox({ cert, onClose }) {
     </AnimatePresence>
   );
 }
+
 
 /* ─── Certificate Card ─────────────────────────────────────────────── */
 function CertCard({ cert, delay, inView }) {
@@ -247,11 +281,12 @@ function TableRow({ left, title, subtitle, bullets, extra, delay, inView }) {
   return (
     <FadeRow delay={delay} inView={inView}>
       <div
-        className="grid gap-4 py-8"
+        className="py-8"
         style={{
           borderTop: '1px solid var(--border)',
-          gridTemplateColumns: 'clamp(120px, 18%, 200px) 1fr',
-          alignItems: 'start',
+          display: 'grid',
+          gap: 'clamp(12px, 3vw, 32px)',
+          gridTemplateColumns: 'clamp(80px, 16%, 180px) 1fr',
         }}
       >
         <div>{left}</div>

@@ -371,3 +371,68 @@ body {
   border-color: var(--charcoal);
 }
 .skill-tag.has-link { cursor: none; }
+
+/* ─── Mobile Improvements ────────────────────────────────────────── */
+/* Tighter section padding on small phones */
+@media (max-width: 480px) {
+  .section-pad {
+    padding-top:    clamp(48px, 12vw, 80px);
+    padding-bottom: clamp(48px, 12vw, 80px);
+  }
+
+  /* Prevent horizontal overflow on tiny phones */
+  .container-editorial {
+    padding-left:  20px;
+    padding-right: 20px;
+  }
+
+  /* Skill tags wrap gracefully */
+  .marquee-track-left,
+  .marquee-track-right {
+    gap: 8px;
+  }
+
+  /* Cert overlay — full screen on mobile with safe padding */
+  .cert-overlay {
+    padding: 16px;
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+}
+
+/* Improve touch targets for all interactive elements on mobile */
+@media (hover: none) or (pointer: coarse) {
+  .btn-magnetic {
+    min-height: 44px;
+    padding: 12px 24px;
+  }
+
+  /* Prevent sticky hover states on touch devices */
+  .btn-magnetic:hover::before {
+    transform: scaleX(0);
+  }
+  .btn-magnetic:hover {
+    color: var(--charcoal) !important;
+    transform: none;
+  }
+  .btn-magnetic.filled:hover {
+    color: var(--cream) !important;
+  }
+
+  /* Active state instead */
+  .btn-magnetic:active::before {
+    transform: scaleX(1);
+  }
+  .btn-magnetic:active {
+    color: #f7f4ee !important;
+    transform: scale(0.98) !important;
+  }
+}
+
+/* TableRow responsive: stack columns on mobile */
+@media (max-width: 640px) {
+  .grid.gap-4.py-8[style*='gridTemplateColumns'] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
